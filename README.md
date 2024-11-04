@@ -171,10 +171,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 
-- Streamlit team for their excellent dashboard framework
-- Contributors and users who provide valuable feedback
-- The Python data science community for inspiration and support
+- Dad: When I moved to Canada for 3 months, he suggested keeping a track of expenses, I didn't ¯\_(ツ)_/¯. But when after I moved to Japan, I have kept a record since day 1.
+- Samarth: He gave me the idea to make an app instead of using jupyter notebooks.
 
 ## Support
 
-For support, please open an issue in the GitHub repository or contact the maintainer directly.
+For support, please open an issue in the GitHub repository or contact Sajag directly.
