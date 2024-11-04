@@ -1,5 +1,5 @@
 # Personal Expenses Analysis Dashboard
-Been tracking my expenses meticulously as a working adult so I thought why not analyze them to analyze and improve my spending habits.
+Been tracking my expenses meticulously as a working adult so I thought of digging into the data to understand and improve my spending habits. Hope it helps others too!
 
 ## Features
 
