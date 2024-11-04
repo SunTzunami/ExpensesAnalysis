@@ -7,11 +7,10 @@ Been tracking my expenses meticulously as a working adult so I thought of diggin
 - **Flexible Data Upload**
   - Support for `.xls` and `.xlsx` file formats
   - Automatic data validation and formatting
-  - Customizable category mapping
 
 - **Advanced Time-Based Analysis**
   - Year-wise analysis
-  - Monthly analysis with name-based selection
+  - Monthly analysis
   - Daily analysis
   - Custom date range analysis
   
@@ -34,7 +33,6 @@ Been tracking my expenses meticulously as a working adult so I thought of diggin
   - Category-wise spending predictions
   - Anomaly detection for unusual spending patterns
   - Customizable prediction timeframes
-  - Confidence intervals for predictions
   - Budget planning recommendations
 
 ## Data Format Requirements
