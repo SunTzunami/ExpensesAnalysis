@@ -1,6 +1,5 @@
 # Personal Expenses Analysis Dashboard
-
-A powerful and intuitive Streamlit-based dashboard for analyzing personal expenses, offering comprehensive insights into spending patterns through interactive visualizations and customizable analysis periods.
+Been tracking my expenses meticulously as a working adult so I thought why not analyze them to analyze and improve my spending habits.
 
 ## Features
 
@@ -52,7 +51,7 @@ A powerful and intuitive Streamlit-based dashboard for analyzing personal expens
 | NewCategory | Mapped broader category | String |
 
 ### Category Mapping
-The dashboard implements a two-tier category system for better organization and analysis:
+I had too many categories so I combined the ones I thought were similar:
 
 ```python
 category_mapping = {
