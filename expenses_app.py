@@ -4,13 +4,15 @@ import plotly.express as px
 import seaborn as sns
 from datetime import datetime
 import numpy as np
-from plotters import plot_category_distribution, plot_sunburst, plot_cumulative_expense, plot_expense_timeseries
+from plotters import (plot_for_others, plot_onetime_distribution,
+                      plot_category_distribution, plot_sunburst,
+                      plot_cumulative_expense, plot_expense_timeseries)
 
 # Set page config
 st.set_page_config(page_title="Expense Analyzer", layout="wide")
 
 # Title and description
-st.title("💰 Expense Analysis Dashboard")
+st.title("Expense Analysis Dashboard")
 st.write("Upload your expense data and analyze spending patterns")
 
 # Sidebar for controls
@@ -69,10 +71,18 @@ with st.sidebar:
         # Category grouping option
         st.subheader("Category Settings")
         use_default_categories = st.checkbox("Use Default Category Grouping", value=True)
-        
+
+         # Plot display options
+        st.subheader("Plot Display Options")
+        show_sunburst = st.checkbox("Show Sunburst Plot", value=True)
+        show_onetime_distribution = st.checkbox("Show One-time Distribution Plot", value=True)
+        show_cumulative_expense = st.checkbox("Show Cumulative Expense Plot", value=True)
+        show_timeseries_expense = st.checkbox("Show Timeseries Expense Plot", value=True)
+
         # Plotly publishing option
         st.subheader("Export Settings")
         enable_plotly_export = st.checkbox("Enable Plotly Export", value=False)
+
 
 # Main content area
 if 'df_filtered' in locals() and not df_filtered.empty:
@@ -115,26 +125,33 @@ if 'df_filtered' in locals() and not df_filtered.empty:
     average_daily_expense = total_expense / period_days
 
     # Display Key Metrics
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.metric("Total Expenses", f"¥{total_expense:,.0f}")
     with col2:
         st.metric("Average Monthly Expense", f"¥{average_monthly_expense:,.0f}")
     with col3:
         st.metric("Average Daily Expense", f"¥{average_daily_expense:,.0f}")
+    with col4:
+        st.metric("Number of Days", f"{period_days} days")
 
-    # Display plots in columns
     col1, col2 = st.columns(2)
     with col1:
-        st.plotly_chart(plot_category_distribution(df_filtered), use_container_width=True)
+        if show_sunburst:
+            st.plotly_chart(plot_sunburst(df_filtered), use_container_width=True)
+        else:
+            st.empty()  # Keep the column structure when sunburst is hidden
+
     with col2:
-        st.plotly_chart(plot_sunburst(df_filtered), use_container_width=True)
+        if show_onetime_distribution:
+            st.plotly_chart(plot_onetime_distribution(df_filtered), use_container_width=True)
+        else:
+            st.empty()  # Keep the column structure when onetime distribution is hidden
 
-    # Display Cumulative Expense Plot
-    st.plotly_chart(plot_cumulative_expense(df_filtered), use_container_width=True)
-
-    # Display Timeseries Expense Plot
-    st.plotly_chart(plot_expense_timeseries(df_filtered), use_container_width=True)
+    if show_cumulative_expense:
+        st.plotly_chart(plot_cumulative_expense(df_filtered), use_container_width=True)
+    if show_timeseries_expense:
+        st.plotly_chart(plot_expense_timeseries(df_filtered), use_container_width=True)
 
 else:
     st.info("Please upload an expense file to begin analysis")

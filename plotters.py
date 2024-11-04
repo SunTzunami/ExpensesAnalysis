@@ -4,6 +4,43 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
+def plot_for_others(data):
+# Group data by 'for others' and calculate total expenses for each group
+    grouped_df = data.groupby('for others')['Expense'].sum().reset_index()
+
+# Map 'for others' values to 'Yes' and 'No'
+    grouped_df['for_label'] = grouped_df['for others'].map({0: 'No', 1: 'Yes'})
+
+    fig = px.pie(
+        grouped_df,
+        values='Expense',
+        names='for_label',
+        title='Expense Distribution (for myself or others)',
+        labels={'No': 'Self Expenses', 'Yes': 'For Others'},  # Label customization
+        color='for_label',  # Use the label column for color mapping
+        color_discrete_map={
+            'No': '#76a5af',  # Muted teal for self expenses
+            'Yes': '#f5a399'  # Soft coral for expenses for others
+        }
+    )
+
+    # Add visual enhancements
+    fig.update_traces(
+        textinfo='percent+label',
+        hovertemplate='<b>For others =</b> %{label}<br><b>Expense =</b> %{value} ¥',  # Customize hover text
+        marker=dict(line=dict(color='#333333', width=1)),  # Dark gray border for subtle contrast
+    )
+
+    # Customize layout, set the figure size, and adjust legend position
+    fig.update_layout(
+        legend=dict(title="For Others", x=1, y=0.5),
+        margin=dict(l=10, r=10, b=0, t=50),
+        font=dict(family='Garamond', size=14, color='black'),  # Consistent styling
+        title=dict(font=dict(size=20)),  # Title font size
+        height=400  # Set the height of the figure
+    )
+    return fig
+
 def plot_onetime_distribution(data):
         grouped_df = data.groupby('onetime')['Expense'].sum().reset_index()
         grouped_df['onetime_label'] = grouped_df['onetime'].map({0: 'Regular', 1: 'One-time'})
@@ -26,13 +63,15 @@ def plot_onetime_distribution(data):
             marker=dict(line=dict(color='#333333', width=1))
         )
         
+         # Customize layout, set the figure size, and adjust legend position
         fig.update_layout(
-            showlegend=True,
-            legend=dict(title="Expense Type"),
-            margin=dict(l=10, r=10, b=10, t=40),
-            height=400
+            legend=dict(title="Type of expense", x=1, y=0.5),
+            margin=dict(l=10, r=10, b=0, t=50),
+            font=dict(family='Garamond', size=14, color='black'),  # Consistent styling
+            title=dict(font=dict(size=20)),  # Title font size
+            height=400  # Set the height of the figure
         )
-        
+    
         return fig
 
 def plot_category_distribution(data):
@@ -77,7 +116,7 @@ def plot_category_distribution(data):
 def plot_sunburst(data):
     fig  = px.sunburst(data, path=['NewCategory', 'category'], values='Expense',
                     color='NewCategory',  # Color by the "NewCategory" column
-                    title='Expense Distribution',
+                    title='Expense Distribution by Category',
                     color_discrete_map={
             'Housing and Utilities': '#e2c596',  # Softer goldenrod
             'Food': '#99b98b',  # Softer olive green
@@ -105,6 +144,8 @@ def plot_sunburst(data):
                         marker=dict(line=dict(color='white', width=1.5)) )
     return fig
 
+
+# have heatmap instead
 def plot_cumulative_expense(data, threshold=50000):
     # Prepare data
     data = data.copy()
@@ -198,4 +239,22 @@ def plot_expense_timeseries(data, dma_window=10):
         line=dict(width=2)
     )
     
+    return fig
+
+def plot_forecast(df, forecast, model_name):
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=df.index, y=df['Cumulative Expense'], 
+                             mode='lines', name='Actual', line=dict(color='cyan')))
+    fig.add_trace(go.Scatter(x=forecast.index, y=forecast, 
+                             mode='lines', name=f'{model_name} Prediction', line=dict(color='red')))
+    fig.update_layout(title=f'{model_name} Forecast',
+                      xaxis_title='Date',
+                      yaxis_title='Cumulative Expense',
+                      legend_title='Legend',
+                      font=dict(size=12),
+                      plot_bgcolor='white',
+                      paper_bgcolor='white',
+                      font_color='black')
+    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='gray')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='gray')
     return fig
